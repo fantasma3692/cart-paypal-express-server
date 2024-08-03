@@ -1,0 +1,381 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Cart PayPal Express API",
+      "description": "API for shopping cart with PayPal integration and user authentication using Supabase"
+    },
+    "host": "localhost:5000",
+    "basePath": "/api",
+    "tags": [
+      {
+        "name": "Auth",
+        "description": "Operations about user authentication"
+      },
+      {
+        "name": "Cart",
+        "description": "Operations about shopping cart"
+      },
+      {
+        "name": "Payment",
+        "description": "Operations about payment"
+      },
+      {
+        "name": "Product",
+        "description": "Operations about products"
+      }
+    ],
+    "paths": {
+      "/auth/signup": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "Sign up a new user",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User created successfully"
+            },
+            "400": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/auth/signin": {
+        "post": {
+          "tags": ["Auth"],
+          "summary": "Sign in an existing user",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User signed in successfully"
+            },
+            "400": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/cart": {
+        "get": {
+          "tags": ["Cart"],
+          "summary": "Get user's cart",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        },
+        "post": {
+          "tags": ["Cart"],
+          "summary": "Add item to cart",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "integer"
+                  },
+                  "quantity": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Item added to cart"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["Cart"],
+          "summary": "Remove item from cart",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "productId": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Item removed from cart"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/payment/create": {
+        "post": {
+          "tags": ["Payment"],
+          "summary": "Create a payment",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "sku": {
+                          "type": "string"
+                        },
+                        "price": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "total": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Payment created successfully"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/payment/execute": {
+        "post": {
+          "tags": ["Payment"],
+          "summary": "Execute a payment",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "paymentId": {
+                    "type": "string"
+                  },
+                  "payerId": {
+                    "type": "string"
+                  },
+                  "total": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Payment executed successfully"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/products": {
+        "get": {
+          "tags": ["Product"],
+          "summary": "Get all products",
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        },
+        "post": {
+          "tags": ["Product"],
+          "summary": "Create a product",
+          "parameters": [
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Product created"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      },
+      "/products/{id}": {
+        "get": {
+          "tags": ["Product"],
+          "summary": "Get product by ID",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful operation"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        },
+        "put": {
+          "tags": ["Product"],
+          "summary": "Update a product",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "price": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Product updated"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        },
+        "delete": {
+          "tags": ["Product"],
+          "summary": "Delete a product",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Product deleted"
+            },
+            "500": {
+              "description": "Error occurred"
+            }
+          }
+        }
+      }
+    }
+  }
+  
